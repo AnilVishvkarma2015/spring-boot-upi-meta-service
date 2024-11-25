@@ -44,7 +44,7 @@ public class UPIAccountController {
 			UPIAccountEntity registeredAccount = upiAccountService.registerNewAccount(accountRequest);
 			Twilio.init(smsSid, smsAuth);
 			String upiNewAccountSms = CommonUtils.generateNewUpiAccountSms(registeredAccount);
-			logger.info("Acocunt upi oepning sms ---{}", upiNewAccountSms);
+			logger.info("UPI Account Opening SMS ---{}", upiNewAccountSms);
 			Message.creator(new PhoneNumber("+91".concat("9713448164")), new PhoneNumber("+17204105448"), upiNewAccountSms).create();
 			return new ResponseEntity<>(registeredAccount, HttpStatus.OK);
 		} catch (Exception ex) {

@@ -13,6 +13,7 @@ HELP.md
 .settings
 .springBeans
 .sts4-cache
+.src/.DS_Store
 
 ### IntelliJ IDEA ###
 .idea

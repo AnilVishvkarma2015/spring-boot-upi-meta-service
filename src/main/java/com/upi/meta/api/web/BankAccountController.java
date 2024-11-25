@@ -49,7 +49,7 @@ public class BankAccountController {
 			BankAccountEntity registeredAccount = bankAccountService.registerNewAccount(accountRequest);
 			Twilio.init(smsSid, smsAuth);
 			String accountOpenSms = CommonUtils.generateNewAccountSms(registeredAccount);//
-			logger.info("Acocunt oepning sms ---{}", accountOpenSms);
+			logger.info("BankAccount Openning SMS ---{}", accountOpenSms);
 			Message.creator(new PhoneNumber("+91".concat("9713448164")), new PhoneNumber("+17204105448"), accountOpenSms).create();
 			return new ResponseEntity<>(registeredAccount, HttpStatus.OK);
 		} catch (Exception ex) {

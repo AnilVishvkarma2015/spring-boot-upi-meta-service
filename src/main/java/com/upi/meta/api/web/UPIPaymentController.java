@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import com.upi.meta.api.bank.BankPaymentEntity;
@@ -43,14 +44,13 @@ public class UPIPaymentController {
 			logger.info("upi payment request received : {}", paymentEntries);
 			String txnRefNo = bankPaymentService.paymentProcessing(paymentEntries);
 
-			// Twilio.init(smsSid, smsAuth);
+			Twilio.init(smsSid, smsAuth);
 			String payerTransferSms = CommonUtils.generatePayerPaymentSms(paymentEntries.getPayerAccount(), txnRefNo, paymentEntries.getTxnAmount());
 			String payeeTransferSms = CommonUtils.generatePayeePaymentSms(paymentEntries.getPayeeAccount(), txnRefNo, paymentEntries.getTxnAmount());
 			logger.info("payerTransferSms sms ---{}", payerTransferSms);
 			logger.info("payeeTransferSms sms ---{}", payeeTransferSms);
 			Message.creator(new PhoneNumber("+91".concat("9713448164")), new PhoneNumber("+17204105448"), payerTransferSms).create();
 			Message.creator(new PhoneNumber("+91".concat("9713448164")), new PhoneNumber("+17204105448"), payeeTransferSms).create();
-			Thread.sleep(1000);
 			return new ResponseEntity<>(txnRefNo, HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
