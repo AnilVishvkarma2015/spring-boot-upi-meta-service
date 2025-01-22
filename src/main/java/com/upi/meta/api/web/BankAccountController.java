@@ -48,9 +48,9 @@ public class BankAccountController {
 			logger.info("Bank account registration request received : {}", accountRequest);
 			BankAccountEntity registeredAccount = bankAccountService.registerNewAccount(accountRequest);
 			Twilio.init(smsSid, smsAuth);
-			String accountOpenSms = CommonUtils.generateNewAccountSms(registeredAccount);//
-			logger.info("BankAccount Openning SMS ---{}", accountOpenSms);
-			Message.creator(new PhoneNumber("+91".concat("9713448164")), new PhoneNumber("+17204105448"), accountOpenSms).create();
+			String accountOpenSms = CommonUtils.generateNewAccountSms(registeredAccount);
+			logger.info("New bank account opened sms ::", accountOpenSms);
+			Message.creator(new PhoneNumber("+91".concat(accountRequest.getMobileNo())), new PhoneNumber("+17204105448"), accountOpenSms).create();
 			return new ResponseEntity<>(registeredAccount, HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -119,14 +119,14 @@ public class BankAccountController {
 	@GetMapping(path = "/bank/account/otp/{accNum}")
 	public ResponseEntity<Object> sendOtpForAccountNo(@PathVariable(required = true) String accNum) {
 		try {
-			logger.info("Send OTP for UPI registration for the account  No : {}", accNum);
+			logger.info("Send OTP for UPI registration for the account No : {}", accNum);
 			BankAccountEntity existingAccount = bankAccountService.sendOtpForAccount(accNum);
 
 			if (Objects.nonNull(existingAccount)) {
 				Twilio.init(smsSid, smsAuth);
 				String accountOtpSms = CommonUtils.generateOtpSms(existingAccount);
-				logger.info("Acocunt oepning accountOtpSms ---{}", accountOtpSms);
-				Message.creator(new PhoneNumber("+91".concat("9713448164")), new PhoneNumber("+17204105448"), accountOtpSms).create();
+				logger.info("otp sms for upi account registration ::", accountOtpSms);
+				Message.creator(new PhoneNumber("+91".concat(existingAccount.getMobileNo())), new PhoneNumber("+17204105448"), accountOtpSms).create();
 				return new ResponseEntity<>(existingAccount, HttpStatus.OK);
 			}
 

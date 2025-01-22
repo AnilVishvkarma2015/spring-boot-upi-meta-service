@@ -31,5 +31,4 @@ public class BankController {
 			return new ResponseEntity<>(ex, HttpStatus.NOT_FOUND);
 		}
 	}
-
 }
