@@ -47,8 +47,8 @@ public class UPIPaymentController {
 			Twilio.init(smsSid, smsAuth);
 			String payerTransferSms = CommonUtils.generatePayerPaymentSms(paymentEntries.getPayerAccount(), txnRefNo, paymentEntries.getTxnAmount());
 			String payeeTransferSms = CommonUtils.generatePayeePaymentSms(paymentEntries.getPayeeAccount(), txnRefNo, paymentEntries.getTxnAmount());
-			logger.info("upi payer transaction sms :: ", payerTransferSms);
-			logger.info("upi payee transaction sms :: ", payeeTransferSms);
+			logger.info("upi payer transaction sms :: {}", payerTransferSms);
+			logger.info("upi payee transaction sms :: {}", payeeTransferSms);
 			Message.creator(new PhoneNumber("+91".concat(paymentEntries.getPayerAccount().getMobileNo())), new PhoneNumber("+17204105448"), payerTransferSms).create();
 			Message.creator(new PhoneNumber("+91".concat(paymentEntries.getPayeeAccount().getMobileNo())), new PhoneNumber("+17204105448"), payeeTransferSms).create();
 			return new ResponseEntity<>(txnRefNo, HttpStatus.OK);

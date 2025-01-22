@@ -49,7 +49,7 @@ public class BankAccountController {
 			BankAccountEntity registeredAccount = bankAccountService.registerNewAccount(accountRequest);
 			Twilio.init(smsSid, smsAuth);
 			String accountOpenSms = CommonUtils.generateNewAccountSms(registeredAccount);
-			logger.info("New bank account opened sms ::", accountOpenSms);
+			logger.info("New bank account opened sms ::{}", accountOpenSms);
 			Message.creator(new PhoneNumber("+91".concat(accountRequest.getMobileNo())), new PhoneNumber("+17204105448"), accountOpenSms).create();
 			return new ResponseEntity<>(registeredAccount, HttpStatus.OK);
 		} catch (Exception ex) {
@@ -125,7 +125,7 @@ public class BankAccountController {
 			if (Objects.nonNull(existingAccount)) {
 				Twilio.init(smsSid, smsAuth);
 				String accountOtpSms = CommonUtils.generateOtpSms(existingAccount);
-				logger.info("otp sms for upi account registration ::", accountOtpSms);
+				logger.info("otp sms for upi account registration ::{}", accountOtpSms);
 				Message.creator(new PhoneNumber("+91".concat(existingAccount.getMobileNo())), new PhoneNumber("+17204105448"), accountOtpSms).create();
 				return new ResponseEntity<>(existingAccount, HttpStatus.OK);
 			}
